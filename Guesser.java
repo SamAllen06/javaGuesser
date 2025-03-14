@@ -40,42 +40,60 @@ public class Guesser{
 			guessNumber += 1;
 			System.out.print("What's your guess? ");
 			String response = input.nextLine();
-			int intResponse = Integer.parseInt(response); //validate input later
-			if (intResponse > answer){
-				System.out.println("Too high!");
-			} //end if statement
-			else if (intResponse < answer){
-				System.out.println("Too low...");
-			} //end else if statement
-			else if (intResponse == answer){
-				System.out.println("Correct!");
-				keepGoing = false;
-				if (guessNumber < 7){
-					System.out.println("You did amazing!");
+			try {
+				int intResponse = Integer.parseInt(response);
+				if (intResponse > answer){
+					System.out.println("Too high!");
 				} //end if statement
-				else if (guessNumber == 7){
-					System.out.println("You did fine...");
+				else if (intResponse < answer){
+					System.out.println("Too low...");
 				} //end else if statement
-				else if (guessNumber > 7){
-					System.out.println("Ah, you can get it in less guesses than that!");
+				else if (intResponse == answer){
+					System.out.println("Correct!");
+					keepGoing = false;
+					if (guessNumber < 7){
+						System.out.println("You did amazing!");
+					} //end if statement
+					else if (guessNumber == 7){
+						System.out.println("You did fine...");
+					} //end else if statement
+					else if (guessNumber > 7){
+						System.out.println("Ah, you can get it in less guesses than that!");
+					} //end else if statement
 				} //end else if statement
-			} //end else if statement
+			} //end try statement
+			catch(NumberFormatException e){
+				System.out.println("Yeah, that's not gonna fly. Try inputting a number. ");
+			} //end catch
 			System.out.println();
 		} //end while loop
 	} //end humanGuesser definition
 
 	public static void computerGuesser(){
 		int lowEnd = 0;
-		int highEnd = 101;
+		int highEnd = 100;
+		int guess = 0;
 		System.out.println("Think of a number... Don't forget it!");
 		boolean keepGoing = true;
 		Scanner input = new Scanner(System.in);
 		while (keepGoing){
-			int guess = (int)((lowEnd + highEnd)/2);
+			int sumModulus = (lowEnd + highEnd)%2;
+			if (sumModulus == 0){
+				guess = (int)((lowEnd + highEnd)/2);
+			} //end if statement
+			else if (sumModulus == 1){
+				guess = (int)((lowEnd + highEnd + 1)/2);
+			} //end if
 			System.out.print("Is it " + guess + "? Too (H)igh, too (L)ow, or (C)orrect? ");
 			String response = input.nextLine();
 			if (response.equalsIgnoreCase("h")){
-				highEnd = guess;
+				if (guess == lowEnd +1){
+					System.out.println("I hope you didn't forget your number! Because that means you cheated... Try again when you're ready to play fair. ");
+					keepGoing = false;
+				} //end if
+				else{
+					highEnd = guess;
+				} //end else
 			} //end if statement
 			else if (response.equalsIgnoreCase("l")){
 				lowEnd = guess;
@@ -88,7 +106,7 @@ public class Guesser{
 				System.out.println("Sorry, invalid response. Let's try that again");
 			} //end else statement
 			if (lowEnd == highEnd){
-				System.out.print("I hope you didn't forget your number! Because that means you cheated... Try again when you're ready to play fair. ");
+				System.out.println("I hope you didn't forget your number! Because that means you cheated... Try again when you're ready to play fair. ");
 				keepGoing = false;
 			} //end if statement
 			System.out.println();
