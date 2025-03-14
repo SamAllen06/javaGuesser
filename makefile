@@ -8,4 +8,5 @@ clean:
 	rm *.class
 
 debug: Guesser.class
-	jdb -g Guesser
+	javac -g Guesser.java
+	jdb Guesser
